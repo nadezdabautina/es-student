@@ -22,35 +22,71 @@ bool get_button_debounce(uint pin)
     return state && gpio_get(pin); // 1 1 - true , false
 }
 
-void handle_command(const char *command)
+
+void cmd_enable (void)
 {
-     if (strcmp(command, "enable") == 0)
-    {
         led_set(true);
         LOG_INF("led on\n");
-    }
-    else if (strcmp(command, "disable")==0)
-    {
+}
+
+void cmd_disable (void)
+{
         led_set(false);
         LOG_INF("led off\n");
-    }
+}
 
-         else if (strcmp(command, "version")==0)
-    {
-        log_version();
-    }
+void cmd_info (void)
+{
+    device_info();
+}
 
-    else if (strcmp(command,"info")==0)
-    {
-        device_info();
-    }
+void cmd_version (void)
+{
+    log_version();
+}
 
-    else
+void cmd_ping(void)
+{
+    printf("pong\n");
+}
+
+typedef void (*command_handler_t)(void);
+
+struct command_t // описание (название, адрес функции)
+{
+    const char *name;
+    command_handler_t handler;
+};
+
+
+
+const struct command_t commands[] = { // таблица функций 
+    { "enable", cmd_enable },
+    { "disable", cmd_disable },
+    { "info", cmd_info },
+    { "version", cmd_version },
+    {"ping", cmd_ping}
+};
+
+#define COMMAND_COUNT (sizeof(commands) / sizeof(commands[0]))
+
+void handle_command(const char *command)
+{
+    for (uint i = 0; i < COMMAND_COUNT; i++)
     {
+        if (strcmp(command, commands[i].name) == 0)
         
-       LOG_ERR("unknown command: %s\n", command);
+        {
+            if (commands[i].handler != NULL)
+            {
+                commands[i].handler();
+            }
+
+            return;
+        }
     }
-   
+
+    LOG_ERR("unknown command: %s\n", command);
 }
 
 void read_line(void)
