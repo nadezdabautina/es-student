@@ -23,6 +23,16 @@ bool get_button_debounce(uint pin)
 }
 
 
+
+
+typedef void (*command_handler_t)(void);
+
+struct command_t // описание (название, адрес функции)
+{
+    const char *name;
+    command_handler_t handler;
+};
+
 void cmd_enable (void)
 {
         led_set(true);
@@ -50,17 +60,7 @@ void cmd_ping(void)
     printf("pong\n");
 }
 
-typedef void (*command_handler_t)(void);
-
-struct command_t // описание (название, адрес функции)
-{
-    const char *name;
-    command_handler_t handler;
-};
-
-
-
-const struct command_t commands[] = { // таблица функций 
+const struct command_t commands[] = { 
     { "enable", cmd_enable },
     { "disable", cmd_disable },
     { "info", cmd_info },
