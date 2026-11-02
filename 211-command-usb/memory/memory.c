@@ -34,7 +34,7 @@ void mem_info(void)
 
     printf("%-10s %-10s %-10s %-10s\n", "area", "start" , "end", "size");
     printf("%-10s 0x%08x 0x%08x %u\n","flash", XIP_BASE,(XIP_BASE + PICO_FLASH_SIZE_BYTES ), PICO_FLASH_SIZE_BYTES);
-   printf("%-10s 0x%08x 0x%08x %-10s\n","sram", SRAM_BASE, SRAM_END, "270336");
+    printf("%-10s 0x%08x 0x%08x %-10s\n","sram", SRAM_BASE, SRAM_END, "270336");
     printf("%-10s 0x%08x 0x%08x %-10s\n","rom", ROM_BASE, ROM_BASE + 16384 ,"16384");
     row("image", (uintptr_t)&__flash_binary_start, (uintptr_t)&__flash_binary_end);
     row("free", (uintptr_t)&__flash_binary_end, (uintptr_t)(XIP_BASE + PICO_FLASH_SIZE_BYTES ));//
@@ -57,17 +57,27 @@ void mem_info(void)
     uintptr_t ram_used = (uintptr_t)(&__bss_end__ - &__bss_start__)+
     (uintptr_t)(&__data_end__-&__data_start__);
 
-    printf("%-10s %4u %c %s %4u %c %s %4u %c %s %4u\n ","flash image:", flash_image, '=',
-         "boot2", (uintptr_t)(&__boot2_end__-&__boot2_start__ ), '+',
-        "text", (uintptr_t)(&__etext-&__boot2_end__), '+',
-    "data", (uintptr_t)(&__data_end__-&__data_start__ ) );
+    printf("  %-11s%8u %c %s %u %c %s %u %c %s %u\n",
+       "flash image", (unsigned)flash_image, '=',
+       "boot2", (unsigned)(uintptr_t)(&__boot2_end__ - &__boot2_start__), '+',
+       "text",  (unsigned)(uintptr_t)(&__etext     - &__boot2_end__), '+',
+       "data",  (unsigned)(uintptr_t)(&__data_end__ - &__data_start__));
 
-    printf("%-10s %4u %2s %4u\n","flash free", PICO_FLASH_SIZE_BYTES-flash_image, "of", PICO_FLASH_SIZE_BYTES);
-    printf("%-10s %4u %c %s %4u %c %s %4u\n", "ram used", ram_used, '=', "data", (uintptr_t)(&__data_end__-&__data_start__),
-    '+', "bss", (uintptr_t)(&__bss_end__ - &__bss_start__));
+    printf("  %-10s%9u %2s %u\n",
+       "flash free", (unsigned)(PICO_FLASH_SIZE_BYTES - flash_image),
+       "of", (unsigned)PICO_FLASH_SIZE_BYTES);
 
-    printf("%-10s %4u %s %4u %s\n", "ram free", (uintptr_t)(&__HeapLimit-&__bss_end__), "for heap and",
-    (uintptr_t)(&__StackTop-&__StackBottom), "for stack" );
+    printf("  %-10s%9u %c %s %u %c %s %u\n",
+       "ram used", (unsigned)ram_used, '=',
+       "data", (unsigned)(uintptr_t)(&__data_end__ - &__data_start__), '+',
+       "bss",  (unsigned)(uintptr_t)(&__bss_end__  - &__bss_start__));
+
+    printf("  %-10s%9u %s %u %s\n",
+       "ram free", (unsigned)(uintptr_t)(&__HeapLimit - &__bss_end__),
+       "for heap and",
+       (unsigned)(uintptr_t)(&__StackTop - &__StackBottom),
+       "for stack");
+
 
 }
 
