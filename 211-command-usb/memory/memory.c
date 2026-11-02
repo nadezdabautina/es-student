@@ -92,46 +92,36 @@ void fw_info(void)
     data_variable++;
     bss_variable++;
 
-    /* код по выровненному адресу, адрес — с Thumb-битом */
-    const uint16_t *main_code     = (const uint16_t *)((uintptr_t)main & ~1u);
-    const uint16_t *fw_info_code  = (const uint16_t *)((uintptr_t)fw_info & ~1u);
+    uint16_t *main_code = (uint16_t *)((uintptr_t)main);
+    uint16_t *main_code1 = (uint16_t *)((uintptr_t)main & ~1u);
+    uint16_t *fw_info_code = (uint16_t *)((uintptr_t)fw_info);
+    uint16_t *fw_info_code1 = (uint16_t *)((uintptr_t)fw_info& ~1u);
 
-    volatile uint32_t stack_variable = 1946;
+
+    uint32_t stack_variable = 1946;
     uint32_t *heap_variable = malloc(sizeof(uint32_t));
+
     if (heap_variable != NULL)
+    {
         *heap_variable = 1951;
+    }
+    
+     const struct command_t *commands_address = commands;
 
-    const struct command_t *commands_address = commands;
-
-    printf("%-15s %-10s %-10s\n", "object", "address", "value");
-
-    printf("%-15s %08x %#06x\n", "main",
-           (uint32_t)(uintptr_t)main, main_code[0]);
-    printf("%-15s %08x %#06x\n", "fw_info",
-           (uint32_t)(uintptr_t)fw_info, fw_info_code[0]);
-
-    printf("%-15s %08x\n", "commands", (uint32_t)(uintptr_t)commands);
-
-    for (int i = 0; i < command_count; i++)
-        printf("- %-13s %08x\n",
-               (commands_address + i)->name,
-               (uint32_t)(uintptr_t)(commands_address + i)->handler);
-
-    printf("%-15s %08x %-8s\n", "DEVICE_PROJECT",
-           (uint32_t)(uintptr_t)DEVICE_PROJECT, DEVICE_PROJECT);
-    printf("%-15s %08x %-8s\n", "DEVICE_BOARD",
-           (uint32_t)(uintptr_t)DEVICE_BOARD, DEVICE_BOARD);
-
-    printf("%-15s %08x %8u\n", "data_variable",
-           (uint32_t)(uintptr_t)&data_variable, data_variable);
-    printf("%-15s %08x %8u\n", "bss_variable",
-           (uint32_t)(uintptr_t)&bss_variable, bss_variable);
-    printf("%-15s %08x %8u\n", "stack_variable",
-           (uint32_t)(uintptr_t)&stack_variable, stack_variable);
-
-  
-    printf("%-15s %08x %8u\n", "heap_variable",
-           (uint32_t)(uintptr_t)&heap_variable, *heap_variable);
+     printf("%-10s %-10s %-10s\n", "object", "address" , "value");
+     printf ("%-10s 0x%08x %#06x\n", "main", main_code1, main_code1[0]);
+     printf ("%-10s 0x%08x %#06x\n", "fw_info", fw_info_code1, fw_info_code1[0]) ;
+    printf ("%-10s 0x%08x\n", "commands", commands_address);
+   for (int i = 0; i < command_count; i++)
+    {
+        printf(" %-10s 0x%08x\n", commands[i].name, (uint32_t)commands[i].handler);
+    }
+    printf ("%-10s 0x%08x %-8s\n", "DEVICE_PROJECT", DEVICE_PROJECT, DEVICE_PROJECT);
+    printf ("%-10s 0x%08x  %-8s\n", "DEVICE_BOARD", DEVICE_BOARD, DEVICE_BOARD);
+    printf ("%-10s 0x%08x %8u\n", "data_variable", (uint32_t)(&data_variable),*(uint32_t *)(&data_variable));
+    printf ("%-10s 0x%08x %8u\n", "bss_variable", (uint32_t)(&bss_variable),*(uint32_t *)(&bss_variable));
+    printf ("%-10s 0x%08x %8u\n", "stack_variable", (uint32_t)(&stack_variable),*(uint32_t *)(&stack_variable));
+    printf ("%-10s 0x%08x %8u\n", "heap_veriable", heap_variable, *heap_variable);
 
     free(heap_variable);
-}
+} 
