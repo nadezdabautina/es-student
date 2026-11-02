@@ -1,11 +1,11 @@
 #pragma once
 
-#include "pico/types.h" // uint
+#include "pico/types.h" 
 
 
 typedef void (*command_handler_t)(void);
 
-struct command_t // описание (название, адрес функции)
+struct command_t 
 {
     const char *name;
     command_handler_t handler;

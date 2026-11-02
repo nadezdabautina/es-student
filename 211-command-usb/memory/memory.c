@@ -97,20 +97,20 @@ void fw_info(void)
     
      const struct command_t *commands_address = commands;
 
-     printf("%-14s %-10s %-10s\n", "object", "address" , "value");
-     printf ("%-14s %08x %#06x\n", "main", main_code, main_code1[0]);
-     printf ("%-14s %08x %#06x\n", "fw_info", fw_info_code, fw_info_code1[0]) ;
-    printf ("%-14s %08x\n", "commands", commands_address);
+     printf("%-10s %-10s %-10s\n", "object", "address" , "value");
+     printf ("%-10s %08x %#06x\n", "main", main_code, main_code1[0]);
+     printf ("%-10s %08x %#06x\n", "fw_info", fw_info_code, fw_info_code1[0]) ;
+    printf ("%-10s %08x\n", "commands", commands_address);
    for (int i = 0; i < command_count; i++)
     {
-        printf(" %2c %-10s %08x\n", '- ', (commands_address + i)->name, (commands_address + i)->handler);
+        printf(" %-10s %08x\n", (commands_address + i)->name, (commands_address + i)->handler);
     }
-    printf ("%-14s %08x %-8s\n", "DEVICE_PROJECT", DEVICE_PROJECT, DEVICE_PROJECT);
-    printf ("%-14s %08x  %-8s\n", "DEVICE_BOARD", DEVICE_BOARD, DEVICE_BOARD);
-    printf ("%-14s %08x %8u\n", "data_variable", (uint32_t)(&data_variable),*(uint32_t *)(&data_variable));
-    printf ("%-14s %08x %8u\n", "bss_variable", (uint32_t)(&bss_variable),*(uint32_t *)(&bss_variable));
-    printf ("%-14s %08x %8u\n", "stack_variable", (uint32_t)(&stack_variable),*(uint32_t *)(&stack_variable));
-    printf ("%-14s %08x %8u\n", "heap_veriable", heap_variable, *heap_variable);
+    printf ("%-10s %08x %-8s\n", "DEVICE_PROJECT", DEVICE_PROJECT, DEVICE_PROJECT);
+    printf ("%-10s %08x  %-8s\n", "DEVICE_BOARD", DEVICE_BOARD, DEVICE_BOARD);
+    printf ("%-10s %08x %8u\n", "data_variable", (uint32_t)(&data_variable),*(uint32_t *)(&data_variable));
+    printf ("%-10s %08x %8u\n", "bss_variable", (uint32_t)(&bss_variable),*(uint32_t *)(&bss_variable));
+    printf ("%-10s %08x %8u\n", "stack_variable", (uint32_t)(&stack_variable),*(uint32_t *)(&stack_variable));
+    printf ("%-10s %08x %8u\n", "heap_veriable", heap_variable, *heap_variable);
 
     free(heap_variable);
 }

@@ -62,8 +62,6 @@ void cmd_fw_info (void)
     fw_info();
 }
 
-
-
  const struct command_t commands[] = { 
     { "enable", cmd_enable },
     { "disable", cmd_disable },
