@@ -71,8 +71,8 @@
 
            unsigned fields = sizeof(device_card.version) + sizeof(device_card.name) + sizeof(device_card.revision);
 
-           printf("%-6s %u, %-6s %u, %-8s %u\n", "fields", fields, "sizeof", sizeof(device_card), "padding",
-    sizeof(device_card)-fields);
+           printf("%s %u, %s %u, %s %u\n", "fields", fields, "sizeof", sizeof(device_card), "padding",
+       sizeof(device_card) - fields);
    }
 
  
