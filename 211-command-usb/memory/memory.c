@@ -6,6 +6,7 @@
 #include "command.h"
 #include <stdlib.h>
 #include "device.h"
+#include "led.h"
 
 
 extern char __flash_binary_start; // глобльная переменная
@@ -125,3 +126,27 @@ void fw_info(void)
 
     free(heap_variable);
 } 
+
+#define VECTOR_TABLE 0x10000100
+
+
+
+
+  void boot_info(void)
+   {
+
+        const uint32_t *vectors = (const uint32_t *)VECTOR_TABLE;
+
+    uint32_t stack_top = vectors[0];
+    uint32_t reset_handler = vectors[1];
+       volatile uint32_t *gpio_in = (uint32_t *)(SIO_BASE+SIO_GPIO_IN_OFFSET);
+     uint32_t level = (*gpio_in >> led_pin()) & 1u;
+
+    printf("%-10s 0x%08x\n", "vector table", vectors); 
+    printf ("  %-8s 0x%08x\n", "stack top", stack_top);
+      printf ("  %-8s 0x%08x\n", "reset (even)", reset_handler & ~1u);
+    printf ("  %-8s 0x%08x\n", "reset", reset_handler);
+    printf("%-10s 0x%08x\n", "gpio in", gpio_in);
+    printf ("  %-8s %u\n", "led bit", level);
+    printf ("  %-8s %u\n", "gpio get", gpio_get(led_pin()));
+   }
