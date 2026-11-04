@@ -148,5 +148,5 @@ void fw_info(void)
     printf ("  %-8s 0x%08x\n", "reset", reset_handler);
     printf("%-10s 0x%08x\n", "gpio in", gpio_in);
     printf ("  %-8s %u\n", "led bit", level);
-    printf ("  %-8s %u\n", "gpio get", gpio_get(led_pin()));
+    printf ("  %-8s %u\n", "gpio_get", gpio_get(led_pin()));
    }
