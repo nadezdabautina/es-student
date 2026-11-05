@@ -11,7 +11,7 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/main.c  ${CMAKE_CURRENT_SOURCE_DIR}/led/led.c ${CMAKE_CURRENT_SOURCE_DIR}/logging/log.c
     ${CMAKE_CURRENT_SOURCE_DIR}/device/device.c ${CMAKE_CURRENT_SOURCE_DIR}/memory/memory.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/clock/clock.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/clock/clock.c   ${CMAKE_CURRENT_SOURCE_DIR}/profiling/profiling.c
 )
 
 target_link_libraries(${PROJECT_NAME} 
@@ -22,7 +22,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/led  ${CMAKE_CURRENT_SOURCE_DIR}/logging ${CMAKE_CURRENT_SOURCE_DIR}/device 
     ${CMAKE_CURRENT_SOURCE_DIR}/memory 
     ${CMAKE_CURRENT_SOURCE_DIR}
-     ${CMAKE_CURRENT_SOURCE_DIR}/clock
+     ${CMAKE_CURRENT_SOURCE_DIR}/clock 
+     ${CMAKE_CURRENT_SOURCE_DIR}/profiling
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
